@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Update Student</title>
+    <link rel="stylesheet" href="/bootstrap-5.0.2-dist/css/bootstrap.min.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+</head>
+
+<body>
+    <div class="container">
+        <h3>Update Student</h3>
+        <hr />
+        <form id="updateForm">
+            <input
+                type="text"
+                name="name"
+                class="form-control col-4 mb-4"
+                placeholder="Enter Name"
+                id="name"
+            />
+            <input
+                type="text"
+                name="email"
+                class="form-control col-4 mb-4"
+                placeholder="Enter Email"
+                id="email"
+            />
+            <input
+                type="text"
+                name="department"
+                class="form-control col-4 mb-4"
+                placeholder="Enter Department"
+                id="department"
+            />
+            <button type="submit" class="btn btn-primary col-2">Update</button>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var studentId = urlParams.get("id");
+            var updateForm = document.getElementById("updateForm");
+
+            updateForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                var updatedStudent = {
+                    name: $("#name").val(),
+                    email: $("#email").val(),
+                    department: $("#department").val(),
+                };
+
+                $.ajax({
+                    url: "http://localhost:8080/student/update/" + studentId,
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(updatedStudent),
+                    success: function () {
+                        alert("Student updated successfully");
+                        window.location.href = "list-students.html";
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("Error occurred while updating student");
+                    },
+                });
+            });
+        });
+    </script>
+</body>
+</html>
